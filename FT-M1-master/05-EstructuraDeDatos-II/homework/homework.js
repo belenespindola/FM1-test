@@ -11,9 +11,78 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
 
-function LinkedList() {}
+function LinkedList() {
+  this.head=null;
+  this._length=0;
+}
 
-function Node(value) {}
+LinkedList.prototype.add= function (value) {
+  if (this.head===null) {
+    this.head=new Node(value)
+    this._length++
+  }
+  else { 
+    let current=this.head
+    while (current.next!==null){
+      current=current.next
+    }
+    current.next=new Node(value)
+    this._length++
+  }  
+}
+
+
+
+LinkedList.prototype.remove= function (value) {
+  let current=this.head;
+  if (this.head===null) { return null} //caso lista vacía
+else {
+if (current && !current.next) { //caso de lista con un solo nodo, aca preguntamos, si hay un solo nodo y si su next tiene valor null, entonces hacemos lo que sigue
+  let aux=this.head.value;
+  this.head=null;
+  this._length--;
+return aux; 
+
+}
+}
+
+// caso para n cantidad de notos; debemos buscar el anteúltimo nodo 
+// head - 1 - 2 -4- 6 - null, para borrar el nodo 6, debo posicionarme en el nodo 4
+while (current.next.next !==null) { 
+  //mientras current.next.next sea distinto de null, avanza un casillero al siguiente nodo,
+  current=current.next;
+}
+ // cuando es null current.next.next, debo guardarme el valor de ese nodo
+ let aux1=current.next.value;
+ current.next=null;
+ this._length--;
+  return aux1;
+}
+
+
+LinkedList.prototype.search= function(value) {
+  if (this.head===null) { return null} //caso lista vacia
+  let current=this.head 
+  while (current) {// mientras exista un current
+    if (current.value===value) { return current.value}
+    else if (typeof value === 'function') { //si el value que me pasan es una función, tengo que evaluar si el valor del nodo (osea current.value) para esa función se cumple TRUE; si es así, devuelvo el current.value, osea el valor del nodo
+        if (value(current.value)) { 
+          return current.value;
+        }
+    }
+    current=current.next //si no se cumplen ninguna de las dos condiciones anteriores, paso al siguiente nodo para seguir buscando el valor
+  }
+// si no encuentra el valor, se corta la ejecución del while y retorna null
+return null; 
+
+};
+
+
+
+function Node(value) {
+  this.value=value
+  this.next=null
+}
 
 /*
 Implementar la clase HashTable.
@@ -30,10 +99,46 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable() {
+this.numBuckets=35
+this.buckets = []
+}
+
+HashTable.prototype.hash = function (key) {
+  let sum=0
+  for (let i=0; i<key.length; i++) {
+    sum+=key.charCodeAt(i)
+  }
+ return sum%this.numBuckets;
+
+};
+
+HashTable.prototype.set = function(key, value)
+{if (typeof (key) !== 'string') throw new TypeError ('Keys must be strings'); 
+// en este paso, lo que hago es verificar que key si o si sea una string, y si no arroja error//
+// lo que tengo que hacer ahora es hashear a key y que me devuelva la posicion dónde está//
+let i= this.hash(key)
+if (this.buckets[i]===undefined) { 
+  this.buckets[i]={}
+}
+this.buckets[i][key]=value;
+}
+HashTable.prototype.get= function(key) {
+  let i= this.hash(key)
+if (this.buckets[i]===undefined) { 
+  return undefined; }
+  else return this.buckets[i][key];
+}
+HashTable.prototype.hasKey=function(key) {
+  let i= this.hash(key)
+  return this.buckets[i].hasOwnProperty(key);
+}
+
+
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
+
 
 module.exports = {
   Node,
