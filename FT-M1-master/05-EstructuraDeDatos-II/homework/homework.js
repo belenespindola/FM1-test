@@ -1,7 +1,7 @@
 "use strict";
 
 /*
-Implementar la clase LinkedList, definiendo los siguientes métodos:
+Implementar la clase LinkedList(LISTAENLAZADA), definiendo los siguientes métodos:
   - add: agrega un nuevo nodo al final de la lista;
   - remove: elimina el último nodo de la lista y retorna su valor (tener en cuenta el caso particular de una lista de un solo nodo y de una lista vacía);
   - search: recibe un parámetro y lo busca dentro de la lista, con una particularidad: el parámetro puede ser un valor o un callback. En el primer caso, buscamos un nodo cuyo valor coincida con lo buscado; en el segundo, buscamos un nodo cuyo valor, al ser pasado como parámetro del callback, retorne true. 
